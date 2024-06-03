@@ -13,13 +13,15 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   void _onEvent(SplashInitEvent event, Emitter<SplashState> emit,
       SplashInitial currState) async {
-    await Future.delayed(const Duration(seconds: 4)).whenComplete(() async {
+    await Future.delayed(const Duration(seconds: 2)).whenComplete(() async {
       bool loggedin = CustomSharedPreference.getLoginStatus();
 
       if (loggedin) {
         emit(SplashGoToHome());
       } else {
-        emit(SplashGoToLogin());
+        emit(SplashGoToHome());
+
+        // emit(SplashGoToLogin());
       }
     });
   }

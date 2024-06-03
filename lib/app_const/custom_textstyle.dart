@@ -47,6 +47,11 @@ class CustomTextStyle {
   //   // height: 1.5,
   //   fontSize: 15,
   // );
+  static TextStyle categoryTitleStyle = TextStyle(
+    color: AppColors.kwhiteColor,
+    fontWeight: FontWeight.w600,
+    fontSize: 15,
+  );
 
   static TextStyle cardTitleStyle = TextStyle(
     color: AppColors.kMatteBlack,

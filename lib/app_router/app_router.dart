@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:pms/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:pms/bloc/home_bloc/home_screen.dart';
 import 'package:pms/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:pms/bloc/login_bloc/login_screen.dart';
@@ -44,7 +45,10 @@ class AppRouter {
             path: '/home',
             name: AppRouteName.home,
             builder: (context, state) {
-              return const HomeScreen();
+              return BlocProvider(
+                create: (context) => HomeBloc()..add(HomeInitEvent()),
+                child: const HomeScreen(),
+              );
             },
           ),
           GoRoute(

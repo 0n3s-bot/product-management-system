@@ -14,7 +14,7 @@ class AppTheme {
         backgroundColor: AppColors.kPrimaryColor,
         foregroundColor: AppColors.kwhiteColor,
         centerTitle: false,
-        toolbarHeight: 90,
+        // toolbarHeight: 90,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(16),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pms/app_const/app_text.dart';
 import 'package:pms/app_theme/app_theme.dart';
 import 'package:pms/core_module.dart';
 
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
         routerConfig: CoreModule.instance.appRouter.router,
-        title: 'Flutter Demo',
+        title: kAppName,
         theme: AppTheme.kLightTheme
         // home: const ,
         );
