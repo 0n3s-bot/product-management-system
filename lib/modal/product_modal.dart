@@ -119,6 +119,10 @@ class ProductModal {
             images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
         "thumbnail": thumbnail,
       };
+  static List<ProductModal>? fromJsonList(List? list) {
+    if (list == null) return null;
+    return list.map((item) => ProductModal.fromJson(item)).toList();
+  }
 }
 
 class Dimensions {

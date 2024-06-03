@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pms/modal/category_modal.dart';
 import 'package:pms/modal/product_modal.dart';
@@ -18,11 +19,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         (event, emit) => _oninit(event, emit, state as HomeInitial));
     on<HomeTriggerShowEvent>(
         (event, emit) => _ontTrigger(event, emit, state as HomeInitial));
+    on<HomeLoadMoreEvent>(
+        (event, emit) => _onLoadMore(event, emit, state as HomeInitial));
   }
 
   void _oninit(HomeInitEvent event, Emitter<HomeState> emit,
       HomeInitial currState) async {
     List<CategoryModal>? cate;
+    List<ProductModal>? productList;
     emit(currState.copyWith(loading: true));
     try {
       List<CategoryModal> homecate = [];
@@ -32,13 +36,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           homecate.add(cate[i]);
         }
       }
+      int page = (currState.page ?? 0) + 1;
 
-      await _getProduct(pages: (currState.page ?? 0) + 1);
+      productList = await _getProduct(pages: page);
 
-      emit(currState.copyWith(
-          loading: false, categoryList: homecate, originalCateList: cate));
+      emit(
+        currState.copyWith(
+            loading: false,
+            categoryList: homecate,
+            originalCateList: cate,
+            productList: productList,
+            page: page),
+      );
     } catch (e) {
       emit(HomeError());
+
+      log(e.toString());
+
       emit(currState.copyWith(loading: false));
     }
   }
@@ -66,6 +80,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
+  void _onLoadMore(HomeLoadMoreEvent event, Emitter<HomeState> emit,
+      HomeInitial currState) async {
+    if (currState.loadingMore == false) {
+      List<ProductModal>? productList;
+      emit(currState.copyWith(loadingMore: true));
+      try {
+        int page = (currState.page ?? 0) + 1;
+
+        productList = await _getProduct(pages: page);
+        emit(
+          currState.copyWith(
+              loadingMore: false, productList: productList, page: page),
+        );
+      } catch (e) {
+        emit(HomeError());
+        emit(currState.copyWith(loadingMore: false));
+      }
+    }
+  }
+
   Future<List<CategoryModal>?> _getCategory() async {
     try {
       final response = await _apiService.request(
@@ -83,14 +117,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  Future<List<CategoryModal>?> _getProduct({required int pages}) async {
+  Future<List<ProductModal>?> _getProduct({required int pages}) async {
     final misc = "?skip=0&limit=${pages * 10}";
     try {
       final response = await _apiService.request(
           "${ApiEndPoint.kGetProducts}$misc", METHOD.GET, null);
 
       if (response != null && response.data != null) {
-        List<CategoryModal>? cate = CategoryModal.fromJsonList(response.data);
+        List<ProductModal>? cate =
+            ProductModal.fromJsonList(response.data['products']);
 
         return cate;
       } else {

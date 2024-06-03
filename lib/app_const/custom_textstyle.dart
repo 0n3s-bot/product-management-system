@@ -101,4 +101,9 @@ class CustomTextStyle {
     fontWeight: FontWeight.w500,
     color: AppColors.kMatteBlack,
   );
+  static TextStyle cardPriceStyle = TextStyle(
+    color: AppColors.kRedColor,
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
+  );
 }

@@ -45,10 +45,13 @@ class AppRouter {
             path: '/home',
             name: AppRouteName.home,
             builder: (context, state) {
-              return BlocProvider(
-                create: (context) => HomeBloc()..add(HomeInitEvent()),
-                child: const HomeScreen(),
-              );
+              return
+                  //  BlocProvider(
+                  //   create: (context) => HomeBloc()..add(HomeInitEvent()),
+                  //   child:
+                  const HomeScreen()
+                  // ,)
+                  ;
             },
           ),
           GoRoute(
