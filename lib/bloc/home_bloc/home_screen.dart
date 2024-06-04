@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pms/app_const/custom_textstyle.dart';
+import 'package:pms/app_router/app_router.dart';
 import 'package:pms/app_theme/app_colors.dart';
 import 'package:pms/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:pms/modal/category_modal.dart';
@@ -157,6 +159,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _buildProductCard(
                                   product: product,
                                   width: boxwidth,
+                                  onTap: () {
+                                    context.pushNamed(AppRouteName.productView,
+                                        extra: product);
+                                  },
                                 )
                               // Text(product.title ?? "")
                             ],
@@ -177,7 +183,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildProductCard(
-      {required ProductModal product, required double width}) {
+      {required ProductModal product,
+      required double width,
+      void Function()? onTap}) {
     double discount = product.discountPercentage ?? 0.0;
     double price = product.price ?? 0.0;
     double discountedAmount = price - (discount / 100) * price;
@@ -185,56 +193,60 @@ class _HomeScreenState extends State<HomeScreen> {
     return Card(
       color: AppColors.kwhiteColor,
       margin: EdgeInsets.zero,
-      child: SizedBox(
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedNetworkImage(
-              imageUrl: product.thumbnail ?? "",
-              errorWidget: (context, url, error) => buildErrorImage(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: Text(
-                      product.title ?? "",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: CustomTextStyle.categoryTitleStyle.copyWith(
-                        color: AppColors.kMatteBlack,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    '\$ ${discountedAmount.toStringAsFixed(2)}',
-                    style: CustomTextStyle.cardPriceStyle,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '\$ ${product.price ?? "0.0"}',
-                        style: CustomTextStyle.carddateStyle.copyWith(
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.lineThrough,
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          width: width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CachedNetworkImage(
+                imageUrl: product.thumbnail ?? "",
+                errorWidget: (context, url, error) => buildErrorImage(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      child: Text(
+                        product.title ?? "",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: CustomTextStyle.categoryTitleStyle.copyWith(
+                          color: AppColors.kMatteBlack,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        ' -${product.discountPercentage}%',
-                        style: CustomTextStyle.carddateStyle,
-                      ),
-                    ],
-                  )
-                ],
+                    ),
+                    Text(
+                      '\$ ${discountedAmount.toStringAsFixed(2)}',
+                      style: CustomTextStyle.cardPriceStyle,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '\$ ${product.price ?? "0.0"}',
+                          style: CustomTextStyle.carddateStyle.copyWith(
+                            fontWeight: FontWeight.w400,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                        Text(
+                          ' -${product.discountPercentage}%',
+                          style: CustomTextStyle.carddateStyle,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

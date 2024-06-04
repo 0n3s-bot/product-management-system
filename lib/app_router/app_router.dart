@@ -6,9 +6,11 @@ import 'package:pms/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:pms/bloc/home_bloc/home_screen.dart';
 import 'package:pms/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:pms/bloc/login_bloc/login_screen.dart';
+import 'package:pms/bloc/product/product_view/product_screen.dart';
 import 'package:pms/core_module.dart';
 import 'package:pms/bloc/splash/bloc/splash_bloc.dart';
 import 'package:pms/bloc/splash/splash_screen.dart';
+import 'package:pms/modal/product_modal.dart';
 
 class AppRouteName {
   static const String home = 'home';
@@ -16,6 +18,7 @@ class AppRouteName {
   static const String login = 'Login';
   static const String itemPreview = 'itemPreview';
   static const String gallery = 'galleryView';
+  static const String productView = 'ProductView';
 }
 
 class AppRouter {
@@ -62,6 +65,14 @@ class AppRouter {
                 create: (context) => LoginBloc(),
                 child: const LoginScreen(),
               );
+            },
+          ),
+
+          GoRoute(
+            path: '/productView',
+            name: AppRouteName.productView,
+            builder: (context, state) {
+              return ProductScreen(product: state.extra as ProductModal);
             },
           ),
           // GoRoute(
