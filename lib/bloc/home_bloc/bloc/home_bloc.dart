@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pms/app_cache/shared_pref/shared_pref.dart';
 import 'package:pms/modal/category_modal.dart';
 import 'package:pms/modal/product_modal.dart';
 import 'package:pms/network/api_endpoint.dart';
@@ -105,6 +107,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ApiEndPoint.kgetCategories, METHOD.GET, null);
 
       if (response != null && response.data != null) {
+        await CustomSharedPreference.setCategories(json.encode(response.data));
+
         List<CategoryModal>? cate = CategoryModal.fromJsonList(response.data);
 
         return cate;

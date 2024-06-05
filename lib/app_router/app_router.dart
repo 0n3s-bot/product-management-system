@@ -6,6 +6,8 @@ import 'package:pms/bloc/category/category_items_screen.dart';
 import 'package:pms/bloc/home_bloc/home_screen.dart';
 import 'package:pms/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:pms/bloc/login_bloc/login_screen.dart';
+import 'package:pms/bloc/product/add/add_product.dart';
+import 'package:pms/bloc/product/add/bloc/add_product_bloc.dart';
 import 'package:pms/bloc/product/product_view/product_screen.dart';
 import 'package:pms/bloc/register_bloc/bloc/register_bloc.dart';
 import 'package:pms/bloc/register_bloc/register_screen.dart';
@@ -27,6 +29,7 @@ class AppRouteName {
   static const String category = 'category';
   static const String search = 'search';
   static const String register = 'register';
+  static const String addProduct = 'addProduct';
 }
 
 class AppRouter {
@@ -63,6 +66,17 @@ class AppRouter {
                   const HomeScreen()
                   // ,)
                   ;
+            },
+          ),
+
+          GoRoute(
+            path: '/addProduct',
+            name: AppRouteName.addProduct,
+            builder: (context, state) {
+              return BlocProvider(
+                create: (context) => AddProductBloc(),
+                child: const AddProductScreen(),
+              );
             },
           ),
           GoRoute(

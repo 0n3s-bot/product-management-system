@@ -5,6 +5,8 @@ import 'package:pms/app_const/custom_textstyle.dart';
 import 'package:pms/app_router/app_router.dart';
 import 'package:pms/app_theme/app_colors.dart';
 import 'package:pms/bloc/splash/bloc/splash_bloc.dart';
+import 'package:pms/provider/app_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -15,6 +17,8 @@ class SplashScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is SplashGoToHome) {
           context.pushReplacementNamed(AppRouteName.home);
+
+          Provider.of<AppProvider>(context, listen: false).init();
         }
         if (state is SplashGoToLogin) {
           context.pushReplacementNamed(AppRouteName.login);

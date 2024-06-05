@@ -10,10 +10,12 @@ import 'package:pms/app_const/custom_textstyle.dart';
 import 'package:pms/app_router/app_router.dart';
 import 'package:pms/app_theme/app_colors.dart';
 import 'package:pms/bloc/login_bloc/bloc/login_bloc.dart';
+import 'package:pms/provider/app_provider.dart';
 import 'package:pms/utills/custom_toast.dart';
 import 'package:pms/utills/form_validator.dart';
 import 'package:pms/widget/custom_button.dart';
 import 'package:pms/widget/custom_textfield.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -62,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
             if (state is LoginSuccess) {
               CustomToast.showMessage(state.messgae,
                   bgcolor: AppColors.kwhiteColor);
-
               AppRouter().clearAndNavigate(path: '/home');
+              Provider.of<AppProvider>(context, listen: false).init();
 
               // context.go('/mainHome');
             }

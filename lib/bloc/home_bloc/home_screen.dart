@@ -76,10 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         bloc.add(HomeInitEvent());
                       },
                       child: ListView(
+                        physics: AlwaysScrollableScrollPhysics(),
                         controller: _scrollController,
                         // crossAxisAlignment: CrossAxisAlignment.start,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 12),
                         children: [
                           // Container(),
                           if (state.loading)
@@ -93,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             controller: TextEditingController(),
                             hintText: "eg:smartphone",
-                            prefixIcon: Icon(Icons.search),
+                            prefixIcon: const Icon(Icons.search),
                           ),
                           SizedBox(
                             height: 24,

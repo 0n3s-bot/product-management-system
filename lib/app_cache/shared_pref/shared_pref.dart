@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:pms/modal/category_modal.dart';
 import 'package:pms/modal/register_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _isLoggedIn = "loggedIn";
 const _users = "users";
 const _user = "user";
+const _categories = "categories";
 
 class CustomSharedPreference {
   static SharedPreferences? _preferences;
@@ -30,10 +32,17 @@ class CustomSharedPreference {
   }
 
   static Map getLoggedUser() {
-    String? str = _preferences?.getString(_users) ?? '{}';
+    String? str = _preferences?.getString(_user) ?? '{}';
     Map usrlist = json.decode(str);
 
     return usrlist;
+  }
+
+  static List<CategoryModal>? getCategories() {
+    String? str = _preferences?.getString(_categories) ?? '[]';
+    List categories = json.decode(str);
+
+    return CategoryModal.fromJsonList(categories);
   }
 // // // // ------------>>>>>>>>>>>>>>> set Values <<<<<<<<<<------------------- // // //
 
@@ -45,6 +54,9 @@ class CustomSharedPreference {
 
   static Future setloggedUser(String value) async =>
       await _preferences?.setString(_user, value);
+
+  static Future setCategories(String value) async =>
+      await _preferences?.setString(_categories, value);
 
 // // // ------------>>>>>>>>>>>>>>> Clear Data <<<<<<<<<<------------------- // // //
 
