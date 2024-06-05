@@ -11,6 +11,7 @@ import 'package:pms/app_router/app_router.dart';
 import 'package:pms/app_theme/app_colors.dart';
 import 'package:pms/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:pms/utills/custom_toast.dart';
+import 'package:pms/utills/form_validator.dart';
 import 'package:pms/widget/custom_button.dart';
 import 'package:pms/widget/custom_textfield.dart';
 
@@ -148,13 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: AppColors.kPrimaryColor,
                                     ),
                                     keyboardTyp: TextInputType.emailAddress,
-                                    // inputFormatters: [
-                                    //   FilteringTextInputFormatter.digitsOnly,
-                                    //   _phoneFomatter
-                                    // ],
-                                    // validator: (value) =>
-                                    //     Validator.validatePhone(
-                                    //         phoneNum: value!),
+                                    validator: (value) =>
+                                        Validator.validateEmail(email: value!),
                                     controller: _emailController),
                                 CustomTextField(
                                   title: 'Password',
@@ -169,9 +165,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   controller: _passwordController,
                                   isObscure: true,
-                                  // validator: (value) =>
-                                  //     Validator.validatePassword(
-                                  //         password: value!),
+                                  validator: (value) =>
+                                      Validator.validatePassword(
+                                          password: value!),
                                 ),
                                 // Align(
                                 //   alignment: Alignment.centerRight,
@@ -213,33 +209,33 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(
                                   height: 12,
                                 ),
-                                // Center(
-                                //   child: RichText(
-                                //     text: TextSpan(
-                                //         style: TextStyle(
-                                //           color: AppColors.kMatteBlack,
-                                //           fontSize: 15,
-                                //           height: 1.5,
-                                //         ),
-                                //         text: "Don't have an account? ",
-                                //         children: [
-                                //           TextSpan(
-                                //             text: 'Register',
-                                //             recognizer: TapGestureRecognizer()
-                                //               ..onTap = () {
-                                //                 context.pushNamed(
-                                //                     AppRouteName.register);
-                                //               },
-                                //             style: TextStyle(
-                                //               color: AppColors.kPrimaryColor,
-                                //               fontSize: 15,
-                                //               fontWeight: FontWeight.w500,
-                                //               height: 1.5,
-                                //             ),
-                                //           ),
-                                //         ]),
-                                //   ),
-                                // ),
+                                Center(
+                                  child: RichText(
+                                    text: TextSpan(
+                                        style: TextStyle(
+                                          color: AppColors.kMatteBlack,
+                                          fontSize: 15,
+                                          height: 1.5,
+                                        ),
+                                        text: "Don't have an account? ",
+                                        children: [
+                                          TextSpan(
+                                            text: 'Register',
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                context.pushNamed(
+                                                    AppRouteName.register);
+                                              },
+                                            style: TextStyle(
+                                              color: AppColors.kPrimaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.5,
+                                            ),
+                                          ),
+                                        ]),
+                                  ),
+                                ),
                                 const SizedBox(
                                   height: 12,
                                 ),

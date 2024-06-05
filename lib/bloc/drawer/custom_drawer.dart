@@ -1,0 +1,148 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pms/app_cache/shared_pref/shared_pref.dart';
+import 'package:pms/app_const/custom_textstyle.dart';
+import 'package:pms/app_router/app_router.dart';
+import 'package:pms/app_theme/app_colors.dart';
+
+class Customdrawer extends Drawer {
+  const Customdrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double scrnHeight = MediaQuery.of(context).size.height;
+    double scrnWidth = MediaQuery.of(context).size.width;
+
+    double resHeight =
+        MediaQuery.orientationOf(context).index == 1 ? scrnWidth : scrnHeight;
+    double resWidth =
+        MediaQuery.orientationOf(context).index == 0 ? scrnWidth : scrnHeight;
+    return Drawer(
+      child: SingleChildScrollView(
+        child: SizedBox(
+          height: resHeight,
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    SafeArea(
+                      bottom: false,
+                      left: false,
+                      right: false,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                resWidth * 0.2,
+                              ),
+                              child: CachedNetworkImage(
+                                  height: resWidth * 0.2,
+                                  width: resWidth * 0.2,
+                                  imageUrl:
+                                      "https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=1769"),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Text(
+                              "Jhon Doe",
+                              style: CustomTextStyle.cardTitleStyle,
+                            ),
+                            Text(
+                              "example@mail.com",
+                              style: CustomTextStyle.cardSubTitleStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // const Text("Drawer"),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    _buildSelector(
+                        title: "Category", icon: Icons.category_outlined),
+
+                    _buildSelector(
+                        title: "Notification",
+                        icon: Icons.notifications_outlined),
+
+                    _buildSelector(
+                      title: "Search",
+                      icon: Icons.search,
+                      onTap: () {
+                        context.pop();
+                        context.push('/search');
+                      },
+                    ),
+
+                    _buildSelector(
+                        title: "Favourite", icon: Icons.favorite_border),
+
+                    _buildSelector(
+                      title: "Logout",
+                      icon: Icons.exit_to_app_rounded,
+                      onTap: () {
+                        CustomSharedPreference.signOut();
+                        context.pushNamed(AppRouteName.login);
+                      },
+                    ),
+
+                    const Divider(),
+                  ],
+                ),
+              ),
+              // Text("Beco                                                                                                                                 me a Seller")
+
+              const SizedBox(
+                height: 24,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildSelector(
+      {IconData? icon, required String title, void Function()? onTap}) {
+    return Column(
+      children: [
+        const Divider(),
+        InkWell(
+          onTap: onTap,
+          child: Container(
+            height: 48,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: AppColors.kMatteBlack,
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.kMatteBlack,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

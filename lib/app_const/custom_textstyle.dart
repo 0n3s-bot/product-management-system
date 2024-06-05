@@ -8,12 +8,23 @@ class CustomTextStyle {
     fontWeight: FontWeight.bold,
     fontSize: 24,
   );
+  static TextStyle cardbuttonTitleStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.kMatteBlack,
+  );
 
   static TextStyle appBarTitleStyle = TextStyle(
     color: AppColors.kwhiteColor,
     fontWeight: FontWeight.w600,
     fontSize: 18,
   );
+  static TextStyle loginTitleStyle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w800,
+    color: AppColors.kMatteBlack,
+  );
+
   // static TextStyle appBarSchoolStyle = TextStyle(
   //   color: AppColors.kwhiteColor,
   //   fontWeight: FontWeight.w600,

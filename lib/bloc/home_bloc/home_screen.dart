@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pms/app_const/custom_textstyle.dart';
 import 'package:pms/app_router/app_router.dart';
 import 'package:pms/app_theme/app_colors.dart';
+import 'package:pms/bloc/drawer/custom_drawer.dart';
 import 'package:pms/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:pms/modal/category_modal.dart';
 import 'package:pms/modal/product_modal.dart';
@@ -52,8 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     return Scaffold(
+      drawer: Customdrawer(),
       appBar: AppBar(
-        title: Text("Home"),
+        title: const Text("Home"),
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
@@ -66,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
           switch (state) {
             case HomeInitial():
               return state.loading && state.categoryList == null
-                  ? Center(
+                  ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : RefreshIndicator.adaptive(
@@ -79,8 +81,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         children: [
-                          Container(),
+                          // Container(),
+                          if (state.loading)
+                            const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           CustomTextField(
+                            isEnabled: false,
+                            onTap: () {
+                              context.pushNamed(AppRouteName.search);
+                            },
                             controller: TextEditingController(),
                             hintText: "eg:smartphone",
                             prefixIcon: Icon(Icons.search),
@@ -96,22 +106,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 16,
                           ),
                           Wrap(
-                            spacing: 12,
-                            runSpacing: 12,
+                            spacing: 16,
+                            runSpacing: 16,
                             children: [
                               for (CategoryModal category
                                   in state.categoryList ?? [])
-                                Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColors.kPrimaryColor,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 6),
-                                    child: Text(
-                                      category.name ?? "",
-                                      style: CustomTextStyle.categoryTitleStyle,
-                                    )),
+                                // Text(category.toJson().toString()),
+                                InkWell(
+                                  borderRadius: BorderRadius.circular(16),
+                                  onTap: () {
+                                    context.pushNamed(AppRouteName.category,
+                                        extra: category.toJson());
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        color: AppColors.kPrimaryColor,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 6),
+                                      child: Text(
+                                        category.name ?? "",
+                                        style:
+                                            CustomTextStyle.categoryTitleStyle,
+                                      )),
+                                ),
                               InkWell(
                                 overlayColor: const WidgetStatePropertyAll(
                                     Colors.transparent),
