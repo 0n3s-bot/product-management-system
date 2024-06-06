@@ -112,7 +112,7 @@ class Customdrawer extends Drawer {
                       icon: Icons.add,
                       onTap: () {
                         context.pop();
-                        context.pushNamed(AppRouteName.addProduct);
+                        context.push('/product/Add');
                       },
                     ),
 

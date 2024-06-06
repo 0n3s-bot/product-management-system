@@ -102,6 +102,16 @@ class _SearchingWidgetState extends State<SearchingWidget> {
                   child: Text("searching..."),
                 ),
               ),
+            if (widget.state.shown == 0 &&
+                widget.state.total == 0 &&
+                !widget.state.searching &&
+                _searchController.text.isNotEmpty)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Text("Result not Found!"),
+                ),
+              ),
             if (!widget.state.searching)
               Wrap(
                 spacing: 16,

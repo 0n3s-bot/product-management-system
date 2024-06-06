@@ -70,13 +70,27 @@ class AppRouter {
           ),
 
           GoRoute(
-            path: '/addProduct',
+            path: '/product/:title',
             name: AppRouteName.addProduct,
             builder: (context, state) {
-              return BlocProvider(
-                create: (context) => AddProductBloc(),
-                child: const AddProductScreen(),
-              );
+              String str = state.pathParameters['title'].toString();
+              return str == 'Add'
+                  ? BlocProvider(
+                      create: (context) => AddProductBloc(),
+                      child: AddProductScreen(
+                        title: state.pathParameters['title'].toString(),
+                      ),
+                    )
+                  : BlocProvider(
+                      create: (context) => AddProductBloc()
+                        ..add(
+                          AddProductEdit(
+                            product: state.extra as ProductModal,
+                          ),
+                        ),
+                      child: AddProductScreen(
+                        title: state.pathParameters['title'].toString(),
+                      ));
             },
           ),
           GoRoute(

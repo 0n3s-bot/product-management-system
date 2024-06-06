@@ -19,7 +19,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       if (loggedin) {
         emit(SplashGoToHome());
       } else {
-        emit(SplashGoToHome());
+        emit(SplashGoToLogin());
 
         // emit(SplashGoToLogin());
       }

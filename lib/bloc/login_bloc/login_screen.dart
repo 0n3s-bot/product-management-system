@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pms/app_const/app_text.dart';
@@ -34,8 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
 
     if (kDebugMode) {
-      _emailController.text = 'test@mail.com';
-      _passwordController.text = 'password';
+      _emailController.text = 'mail@gmail.com';
+      _passwordController.text = 'Password@123';
     }
   }
 
@@ -84,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: screenHeight * 0.1,
+                          height: screenHeight * 0.2,
                         ),
                         // Center(
                         //   child: Container(

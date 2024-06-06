@@ -11,7 +11,8 @@ import 'package:pms/widget/custom_button.dart';
 import 'package:pms/widget/custom_textfield.dart';
 
 class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+  final String title;
+  const AddProductScreen({super.key, required this.title});
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
@@ -28,7 +29,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _warrantyController = TextEditingController();
   final TextEditingController _shippingController = TextEditingController();
-  final TextEditingController _availabilityController = TextEditingController();
+  // final TextEditingController _availabilityController = TextEditingController();
   final TextEditingController _returnController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -38,11 +39,29 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Product'),
+        title: Text('${widget.title} Product'),
       ),
       body: BlocConsumer<AddProductBloc, AddProductState>(
         listener: (context, state) {
-          //
+          if (state is AddProductEditState && state.product != null) {
+            _titleController.text = state.product?.title ?? "";
+            _brandController.text = state.product?.brand ?? "";
+            _skuController.text = state.product?.sku ?? "";
+            _priceController.text = "${state.product?.price ?? ""}";
+            _discountController.text =
+                "${state.product?.discountPercentage ?? ""}";
+            _stockController.text = "${state.product?.stock ?? ""} ";
+            _weigthController.text = "${state.product?.weight ?? ""}";
+            _descriptionController.text = state.product?.description ?? "";
+            _warrantyController.text = state.product?.warrantyInformation ?? "";
+            _shippingController.text = state.product?.shippingInformation ?? "";
+            _returnController.text = state.product?.returnPolicy ?? "";
+          }
+
+          if (state is AddProductError) {
+            CustomToast.showMessage(state.message);
+          }
+
           if (state is AddProductError) {
             CustomToast.showMessage(state.message);
           }
@@ -173,14 +192,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         validator: (value) => Validator.validateField(
                             value: value!, fieldName: 'Shipping Information'),
                       ),
-                      CustomTextField(
-                        title: 'Availability Status',
-                        lines: 5,
-                        showTitle: true,
-                        controller: _availabilityController,
-                        validator: (value) => Validator.validateField(
-                            value: value!, fieldName: 'Availability Status'),
-                      ),
+                      // CustomTextField(
+                      //   title: 'Availability Status',
+                      //   lines: 5,
+                      //   showTitle: true,
+                      //   controller: _availabilityController,
+                      //   validator: (value) => Validator.validateField(
+                      //       value: value!, fieldName: 'Availability Status'),
+                      // ),
                       CustomTextField(
                         title: 'Return policy',
                         lines: 5,
@@ -194,7 +213,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ),
                       customButton(
                         isLoading: state.loading,
-                        title: "Add",
+                        title: widget.title,
                         onPressed: () {
                           Map map = {
                             "title": _titleController.text.trim(),
@@ -211,15 +230,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 _warrantyController.text.trim(),
                             "shippingInformation":
                                 _shippingController.text.trim(),
-                            "availabilityStatus":
-                                _availabilityController.text.trim(),
                             "returnPolicy": _returnController.text.trim(),
                           };
 
                           if (_formKey.currentState!.validate()) {
-                            context
-                                .read<AddProductBloc>()
-                                .add(AddProductSubmit(map: map));
+                            widget.title == "Add"
+                                ? context
+                                    .read<AddProductBloc>()
+                                    .add(AddProductSubmit(map: map))
+                                : context
+                                    .read<AddProductBloc>()
+                                    .add(AddProductSubmitEdit(map: map));
                           }
                         },
                       ),

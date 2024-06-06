@@ -7,7 +7,7 @@ import 'package:pms/network/api_endpoint.dart';
 import 'package:pms/network/app_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-enum METHOD { GET, POST }
+enum METHOD { GET, POST, DELETE, PUT, PATCH }
 
 class APIService {
   final dio = createDio();
@@ -53,6 +53,15 @@ class APIService {
           break;
         case METHOD.POST:
           response = await dio.post(endPoint, data: data);
+          break;
+        case METHOD.DELETE:
+          response = await dio.delete(endPoint, data: data);
+          break;
+        case METHOD.PATCH:
+          response = await dio.patch(endPoint, data: data);
+          break;
+        case METHOD.PUT:
+          response = await dio.put(endPoint, data: data);
           break;
         default:
       }
